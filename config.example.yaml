@@ -122,3 +122,8 @@ receivers:
       deliveryStreamName: "kubernetes-events"
       region: "us-east-1"
       deDot: true
+  - name: "loki"
+    loki:
+      url: "http://localhost:3100/loki/api/v1/push"
+      username: "your-username"
+      password: "your-password"

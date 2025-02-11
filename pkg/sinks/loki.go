@@ -29,6 +29,8 @@ type LokiConfig struct {
 	TLS          TLS                    `yaml:"tls"`
 	URL          string                 `yaml:"url"`
 	Headers      map[string]string      `yaml:"headers"`
+	Username     string                 `yaml:"username"` // P02cc
+	Password     string                 `yaml:"password"` // P02cc
 }
 
 type Loki struct {
@@ -83,6 +85,10 @@ func (l *Loki) Send(ctx context.Context, ev *kube.EnhancedEvent) error {
 			log.Debug().Msgf("request header: {%s: %s}", k, realValue)
 			req.Header.Add(k, realValue)
 		}
+	}
+
+	if l.cfg.Username != "" && l.cfg.Password != "" { // Pd21d
+		req.SetBasicAuth(l.cfg.Username, l.cfg.Password) // Pd21d
 	}
 
 	client := http.DefaultClient
